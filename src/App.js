@@ -48,7 +48,7 @@ const handleSearch=()=>{
 <div className="col-md-12 text-center mt-5" >
 
   <div className='shadow rounded weatherResultBox'>
-    <img className="icon" src={'weatherIcon.png'}/>
+    <img className="icon" src={'weatherIcon.png'} alt="error"/>
     <h5 className='weatherCity'>{data?.name}</h5>
     <h6 className='weatherTemp'>{((data?.main?.temp)-273.15).toFixed(2)}°C</h6>
   </div>

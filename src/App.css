@@ -1,5 +1,5 @@
 .weatherBg{
-  background-image: url(/src/weatherBg.jpg);
+  background-image: url("/src/weatherBg.jpg");
   height: 50vh;
   display: flex;
   align-items: center;
