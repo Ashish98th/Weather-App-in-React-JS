@@ -26,14 +26,12 @@ const handleinputchange=(e)=>{
 setCity(e.target.value);
 }
 
-//when button click the value in input value will go to Api 
+ 
 const handleSearch=()=>{
-   getWeatherDetails(inputCity)  //Now this need cityName,for that we will make one state
+   getWeatherDetails(inputCity)  
 }
 
-// useEffect(()=>{   //api call automatically after rendering
-//   getWeatherDetails("delhi")
-// },[])
+
   return (
     <div className="col-md-12">
       <div className='weatherBg'>
