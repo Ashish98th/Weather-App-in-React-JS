@@ -1,60 +1,62 @@
+import { useState } from 'react';
+
 import axios from 'axios';
+
+import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
 
-import React, {useState } from 'react';
-import "bootstrap/dist/css/bootstrap.min.css";
-
 function App() {
-const apiKey="278adc5ef028dd47489cad4b0cb6d1f6";
-const[inputCity,setCity]=useState("")
-const[data,setData]=useState({})
-const getWeatherDetails=(cityName)=>{
-  if(!cityName) return  //return the code from here only
-  // const apiURL="https://api.openweathermap.org/data/2.5/weather?q=" + cityName + "&appid" + apiKey
-  
-  const apiURL=`https://api.openweathermap.org/data/2.5/weather?q=${cityName}&appid=${apiKey}`;
-  
-  axios.get(apiURL).then((response)=>{
-    console.log("response",response.data)
-    setData(response.data);
-  }).catch((error)=>{
-    console.log("err",error)
-  })
-}
+  const [inputCity, setInputCity] = useState('');
+  const [data, setData] = useState([]);
 
-const handleinputchange=(e)=>{
-setCity(e.target.value);
-}
+  const API_KEY = '9fbd5ab5e0d66ff4d78216405925bcaa';
 
-//when button click the value in input value will go to Api 
-const handleSearch=()=>{
-   getWeatherDetails(inputCity)  //Now this need cityName,for that we will make one state
-}
+  const getWeatherDetails = (cityName) => {
+    if (!cityName) return;
+    const apiURL = `http://api.weatherstack.com/current?access_key=${API_KEY}&query=${cityName}`;
+    axios.get(apiURL).then((res) => {
+      setData(res.data);
+    }).catch((err) => {
+      console.log('err', err);
+    });
+  };
 
-// useEffect(()=>{   //api call automatically after rendering
-//   getWeatherDetails("delhi")
-// },[])
+  const handleChangeInput = (e) => {
+    setInputCity(e.target.value);
+  };
+
+  const handleSearch = (event) => {
+    event.preventDefault();
+    getWeatherDetails(inputCity);
+  };
+
   return (
-    <div className="col-md-12">
+    <div id='container' className='col-md-12'>
       <div className='weatherBg'>
-  <h1>weather</h1>
-<div className='d-grid gap-3 col-4 mt-4'>
-<input type="text" className='form-control' onChange={handleinputchange} value={inputCity} />
-  <button className="btn btn-primary" type="button" onClick={handleSearch} >Search</button>
-</div>
- 
-  </div>
-{Object.keys(data).length>0 &&
-<div className="col-md-12 text-center mt-5" >
+        <h1 className='heading'>Weather App</h1>
+        <form className='d-grid gap-3 col-4 mt-4'>
+          <input type='text' className='form-control'
+                 value={inputCity}
+                 onChange={handleChangeInput} />
+          <button className='btn btn-primary' type='submit'
+                  onClick={handleSearch}
+          >Search
+          </button>
+        </form>
+      </div>
 
-  <div className='shadow rounded weatherResultBox'>
-    <img className="icon" src={'weatherIcon.png'} alt="error"/>
-    <h5 className='weatherCity'>{data?.name}</h5>
-    <h6 className='weatherTemp'>{((data?.main?.temp)-273.15).toFixed(2)}°C</h6>
-  </div>
+      {Object.keys(data).length > 0 &&
+        <div className='col-md-12 text-center mt-5'>
+          <div className='shadow rounded weatherResultBox'>
+            <h5 className='weatherCity'>{data.location.name}</h5>
+            <img className='weatherIcon' src={data.current.weather_icons} alt='Icon' />
 
-</div>
-}
+            <h2 className='weatherTemp'>{data.current.temperature}°C</h2>
+            <h5 className='localTime'>Time: {data.location.localtime}</h5>
+            <h5 className='humidity'>Humidity: {data.current.humidity}</h5>
+          </div>
+        </div>
+      }
     </div>
   );
 }
